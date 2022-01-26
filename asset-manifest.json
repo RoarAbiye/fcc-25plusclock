@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/RoarAbiye.github.io/fcc-25plusclock/static/css/main.8d69a320.css",
+    "main.js": "/RoarAbiye.github.io/fcc-25plusclock/static/js/main.6efedc4e.js",
+    "static/js/787.b3b5e386.chunk.js": "/RoarAbiye.github.io/fcc-25plusclock/static/js/787.b3b5e386.chunk.js",
+    "index.html": "/RoarAbiye.github.io/fcc-25plusclock/index.html",
+    "main.8d69a320.css.map": "/RoarAbiye.github.io/fcc-25plusclock/static/css/main.8d69a320.css.map",
+    "main.6efedc4e.js.map": "/RoarAbiye.github.io/fcc-25plusclock/static/js/main.6efedc4e.js.map",
+    "787.b3b5e386.chunk.js.map": "/RoarAbiye.github.io/fcc-25plusclock/static/js/787.b3b5e386.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8d69a320.css",
+    "static/js/main.6efedc4e.js"
+  ]
+}
