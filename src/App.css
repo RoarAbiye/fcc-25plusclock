@@ -2,6 +2,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100vh;
+  overflow: none;
 }
 
 .wrapper {
@@ -9,13 +11,13 @@ body {
   /* grid-template-columns: 5fr; */
   align-items: center;
   /* flex-direction: column; */
-  background-color: rgba(0, 0, 0, 0.1);
+  /* background-color: rgba(0, 0, 0, 0.1); */
   width: auto;
   height: 45rem;
   margin: 1rem auto;
   /* padding: 2rem; */
-  border-radius: 1rem;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  /* border-radius: 1rem; */
+  /* box-shadow: 0 0 2px rgba(0, 0, 0, 0.3); */
 }
 
 .break-wrapper,
@@ -24,9 +26,11 @@ body {
   text-align: center;
   flex: 0 0 100%;
   /* width: 76%; */
-  background-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-  margin: 2rem;
+  /* background-color: rgba(0, 0, 0, 0.1); */
+  /* background-color: red; */
+  /* box-shadow: 0 0 2px rgba(0, 0, 0, 0.3); */
+  /* margin: 2rem; */
+  width: 400px;
 }
 
 .box-lable {
@@ -48,7 +52,7 @@ body {
   /* align-items: center; */
   /* justify-content: end; */
   /* flex-direction: row; */
-  width: 3rem;
+  width: 5rem;
   height: 3rem;
   margin: .75rem;
   /* padding: .2rem; */
