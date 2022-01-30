@@ -6,33 +6,62 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      running       : false,
-      mainTime      : '25:00',
-      sessionLength : 25
+      running: false,
+      mainTime: "25:00",
+      currentTime: 0,
+      sessionLength: 25,
+      counter: null,
+      paused: null,
     };
+    this.startTimer = this.startTimer.bind(this);
   }
 
+  startTimer = () => {
+    this.setState({ paused: !this.state.paused });
+    let time, minutes, seconds;
+    if (this.state.paused === null) {
+      time = this.state.sessionLength * 60;
+      minutes = this.formater(Math.floor(time / 60));
+      seconds = this.formater(time % 60);
+      this.setState({ paused: false });
+    } else if (this.state.paused) {
+      time = this.state.currentTime;
+      this.setState({ paused: false });
+    } else if (!this.state.paused) {
+      this.setState({ paused: true });
+    }
+    if (!this.state.running) {
+      this.setState({ running: true });
+      this.state.counter = setInterval(() => {
+        console.log(this.state.currentTime + ' ' + this.state.mainTime + ' ' + this.state.sessionLength)
+        minutes = this.formater(Math.floor(time / 60));
+        seconds = this.formater(time % 60);
 
-  conuntDown = () => {
-    let time = this.state.sessionLength*60;
+        if (time <= 0) {
+          clearInterval(this.state.counter);
+          return;
+        }
 
-    setInterval(() => {
-      if(time<0) {this.setState({running: true}); return}
-    let minutes = Math.floor(time/60);
-    let seconds = time%60;
-      let fminutes  = this.formater(minutes)
-      let fseconds  = this.formater(seconds)
-      this.setState({ 
-        mainTime: `${fminutes}:${fseconds}`
-      })
-      time--
-    }, 1000);
+        this.setState({
+          mainTime: `${minutes}:${seconds}`,
+          currentTime: time,
+        });
+        time--;
+      }, 1000);
+      return;
+    }
+    if (this.state.running) {
+      this.setState({ running: false, paused: true });
+      clearInterval(this.state.counter);
+      return;
+    }
   };
 
+  resetTimer = () => {};
+
   formater(tm) {
-    return (tm<10)?'0'+tm:tm;
+    return tm < 10 ? "0" + tm : tm;
   }
-  
 
   render() {
     return (
@@ -54,9 +83,10 @@ class App extends React.Component {
                     <span className="time-display">{this.state.mainTime}</span>
                   </div>
                   <button
-                    onClick={()=>this.conuntDown(this.state.sessionLength)}
-                    className="fa fa-play"
                     id="start_stop"
+                    className={`fa 
+                      ${this.state.running ? "fa-pause" : "fa-play"}`}
+                    onClick={() => this.startTimer()}
                   ></button>
                   <button className="fa fa-refresh" id="reset" />
                 </div>
@@ -64,7 +94,9 @@ class App extends React.Component {
                   <span className="levelOne box-lable">Session Length</span>
                 </div>
                 <div id="session-length">
-                  <span className="levelOne time-display">{this.state.sessionLength}</span>
+                  <span className="levelOne time-display">
+                    {this.state.sessionLength}
+                  </span>
                 </div>
                 <button
                   className="fa fa-angle-double-down"
@@ -97,6 +129,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-// <span className="fa fa-play" />
-// <span className="fa fa-stop" />
