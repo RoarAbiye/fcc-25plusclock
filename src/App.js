@@ -1,19 +1,29 @@
 import "./App.css";
-import ReactFCCtest from "react-fcctest";
 import React from "react";
+import SessionLength from "./Components/SessionLength";
+import Break from "./Components/Break";
+import ReactFCCtest from "react-fcctest";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       running: false,
-      mainTime: "25:00",
+      mainTime: "",
       currentTime: 0,
       sessionLength: 25,
+      breakLength: 5,
       counter: null,
       paused: null,
     };
     this.startTimer = this.startTimer.bind(this);
+    this.CBbuttonFunctions = this.CBbuttonFunctions.bind(this);
+  }
+  componentDidMount() {
+    let t = this.state.sessionLength * 60;
+    let m = this.formater(Math.floor(t / 60));
+    let s = this.formater(t % 60);
+    this.setState({ mainTime: `${m}:${s}` });
   }
 
   startTimer = () => {
@@ -33,7 +43,13 @@ class App extends React.Component {
     if (!this.state.running) {
       this.setState({ running: true });
       this.state.counter = setInterval(() => {
-        console.log(this.state.currentTime + ' ' + this.state.mainTime + ' ' + this.state.sessionLength)
+        console.log(
+          this.state.currentTime +
+            " " +
+            this.state.mainTime +
+            " " +
+            this.state.sessionLength
+        );
         minutes = this.formater(Math.floor(time / 60));
         seconds = this.formater(time % 60);
 
@@ -57,10 +73,55 @@ class App extends React.Component {
     }
   };
 
-  resetTimer = () => {};
+  resetTimer = () => {
+    clearInterval(this.state.counter);
+    this.setState({
+      running: false,
+      mainTime: "25:00",
+      currentTime: 0,
+      sessionLength: 25,
+      breakLength: 5,
+      counter: null,
+      paused: null,
+    });
+  };
 
   formater(tm) {
     return tm < 10 ? "0" + tm : tm;
+  }
+
+  CBbuttonFunctions(action) {
+    switch (action) {
+      case "increaseSession":
+        this.setState({ sessionLength: this.state.sessionLength + 1 });
+        console.log("in-ses");
+        break;
+      case "decreaseSession":
+        if (this.state.sessionLength === 1) {
+          return;
+        } else {
+          this.setState({ sessionLength: this.state.sessionLength - 1 });
+        }
+        break;
+      case "increaseBreak":
+        if (this.state.breakLength === 60) {
+          return;
+        } else {
+          this.setState({ breakLength: this.state.breakLength + 1 });
+          console.log("in-brk");
+        }
+        break;
+      case "decreaseBreak":
+        if (this.state.breakLength === 1) {
+          return;
+        } else {
+          this.setState({ breakLength: this.state.breakLength - 1 });
+          console.log("de-bre");
+        }
+        break;
+      default:
+        return;
+    }
   }
 
   render() {
@@ -68,60 +129,38 @@ class App extends React.Component {
       <div class="App">
         {/* fcc test CDN */}
         <ReactFCCtest />
-
-        {/*application wraper*/}
-        <div class="wrapper">
-          <div className="break-wrapper">
-            <div id="break-label">
-              <div className="session-wrapper">
-                {/*session start*/}
-                <div className="session-display">
-                  <div id="timer-label">
-                    <span className="box-lable">Session</span>
-                  </div>
-                  <div id="time-left">
-                    <span className="time-display">{this.state.mainTime}</span>
-                  </div>
-                  <button
-                    id="start_stop"
-                    className={`fa 
-                      ${this.state.running ? "fa-pause" : "fa-play"}`}
-                    onClick={() => this.startTimer()}
-                  ></button>
-                  <button className="fa fa-refresh" id="reset" />
-                </div>
-                <div id="session-label">
-                  <span className="levelOne box-lable">Session Length</span>
-                </div>
-                <div id="session-length">
-                  <span className="levelOne time-display">
-                    {this.state.sessionLength}
-                  </span>
-                </div>
-                <button
-                  className="fa fa-angle-double-down"
-                  id="session-decrement"
-                ></button>
-                <button
-                  className="fa fa-angle-double-up"
-                  id="session-increment"
-                ></button>
-              </div>
-              {/* break lenght starting */}
-              <span className="levelTwo box-lable">Break Length</span>
-              <div id="break-length">
-                <span className="levelTwo time-display">5</span>
-              </div>
-              <button
-                className="fa fa-angle-double-down"
-                id="break-decrement"
-              ></button>
-              <button
-                className="fa fa-angle-double-up"
-                id="break-increment"
-              ></button>
-            </div>
+        <div class="Session">
+          <div className="timer-label">
+            <span className="box-lable">Session</span>
           </div>
+          <div id="time-left">
+            <span className="time-display">{this.state.mainTime}</span>
+          </div>
+          <div className="btnContainer">
+            <button
+              id="start_stop"
+              className={`fa ${this.state.running ? "fa-pause" : "fa-play"}`}
+              onClick={() => this.startTimer()}
+            ></button>
+            <button
+              className="fa fa-refresh"
+              id="reset"
+              onClick={() => this.resetTimer()}
+            ></button>
+          </div>
+        </div>
+        <div className="SessLength">
+          <SessionLength
+            sesLength={this.state.sessionLength}
+            buttonFunc={this.CBbuttonFunctions}
+          />
+        </div>
+
+        <div className="BreakLength">
+          <Break
+            breakLn={this.state.breakLength}
+            buttonFunc={this.CBbuttonFunctions}
+          />
         </div>
       </div>
     );
