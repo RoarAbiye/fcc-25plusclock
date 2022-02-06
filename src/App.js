@@ -9,6 +9,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       running: false,
+      runningType: "Session",
       mainTime: "",
       currentTime: 0,
       sessionLength: 25,
@@ -43,6 +44,7 @@ class App extends React.Component {
     if (!this.state.running) {
       this.setState({ running: true });
       this.state.counter = setInterval(() => {
+        time--;
         console.log(
           this.state.currentTime +
             " " +
@@ -53,7 +55,7 @@ class App extends React.Component {
         minutes = this.formater(Math.floor(time / 60));
         seconds = this.formater(time % 60);
 
-        if (time <= 0) {
+        if (time < 0) {
           clearInterval(this.state.counter);
           return;
         }
@@ -62,7 +64,6 @@ class App extends React.Component {
           mainTime: `${minutes}:${seconds}`,
           currentTime: time,
         });
-        time--;
       }, 1000);
       return;
     }
@@ -93,8 +94,12 @@ class App extends React.Component {
   CBbuttonFunctions(action) {
     switch (action) {
       case "increaseSession":
-        this.setState({ sessionLength: this.state.sessionLength + 1 });
-        console.log("in-ses");
+        if (this.state.sessionLength === 60) {
+          return;
+        } else {
+          this.setState({ sessionLength: this.state.sessionLength + 1 });
+          console.log("in-ses");
+        }
         break;
       case "decreaseSession":
         if (this.state.sessionLength === 1) {
@@ -124,6 +129,13 @@ class App extends React.Component {
     }
   }
 
+  // pression the session increment/decrement buttons should update
+  // the time remaining display immediately if both these conditions
+  // are true: the clock is not currently running AND the timer is
+  // currently in ‘break’ mode/state. What all this means is that when
+  // you first load your app, if you press +/- on your session buttons,
+  // it will reflect in the display time right away, but when you hit play,
+  // you then cannot change length using same buttons
   render() {
     return (
       <div class="App">
@@ -131,7 +143,9 @@ class App extends React.Component {
         <ReactFCCtest />
         <div class="Session">
           <div className="timer-label">
-            <span className="box-lable">Session</span>
+            <span id="timer-label" className="box-lable">
+              {this.state.runningType}
+            </span>
           </div>
           <div id="time-left">
             <span className="time-display">{this.state.mainTime}</span>
