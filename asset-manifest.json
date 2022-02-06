@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/fcc-25plusclock/static/css/main.d6736fee.css",
-    "main.js": "/fcc-25plusclock/static/js/main.d6c35676.js",
+    "main.js": "/fcc-25plusclock/static/js/main.043239b4.js",
     "static/js/787.b3b5e386.chunk.js": "/fcc-25plusclock/static/js/787.b3b5e386.chunk.js",
     "index.html": "/fcc-25plusclock/index.html",
     "main.d6736fee.css.map": "/fcc-25plusclock/static/css/main.d6736fee.css.map",
-    "main.d6c35676.js.map": "/fcc-25plusclock/static/js/main.d6c35676.js.map",
+    "main.043239b4.js.map": "/fcc-25plusclock/static/js/main.043239b4.js.map",
     "787.b3b5e386.chunk.js.map": "/fcc-25plusclock/static/js/787.b3b5e386.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d6736fee.css",
-    "static/js/main.d6c35676.js"
+    "static/js/main.043239b4.js"
   ]
 }
