@@ -11,59 +11,76 @@ class App extends React.Component {
       running: false,
       runningType: "Session",
       mainTime: "",
-      currentTime: 0,
+      remainingTime: 25,
       sessionLength: 25,
       breakLength: 5,
       counter: null,
       paused: null,
+      break: false,
+      sessionCounter: 0,
     };
     this.startTimer = this.startTimer.bind(this);
     this.CBbuttonFunctions = this.CBbuttonFunctions.bind(this);
   }
   componentDidMount() {
-    let t = this.state.sessionLength * 60;
-    let m = this.formater(Math.floor(t / 60));
-    let s = this.formater(t % 60);
-    this.setState({ mainTime: `${m}:${s}` });
+    let iniTime = this.state.sessionLength * 60;
+    this.displayUpdater(iniTime);
+    clearInterval(this.state.counter);
   }
 
   startTimer = () => {
     this.setState({ paused: !this.state.paused });
-    let time, minutes, seconds;
+
+    //{{{ **assinging time variable eather from break or sessin length**
+    let time;
     if (this.state.paused === null) {
-      time = this.state.sessionLength * 60;
-      minutes = this.formater(Math.floor(time / 60));
-      seconds = this.formater(time % 60);
+      if (this.state.break) {
+        time = this.state.breakLength * 60;
+      } else {
+        time = this.state.sessionLength * 60;
+      }
       this.setState({ paused: false });
     } else if (this.state.paused) {
-      time = this.state.currentTime;
+      time = this.state.remainingTime;
       this.setState({ paused: false });
     } else if (!this.state.paused) {
       this.setState({ paused: true });
+      time = this.state.remainingTime;
     }
+    //}}}
+    this.displayUpdater(time);
     if (!this.state.running) {
       this.setState({ running: true });
+      //interval
       this.state.counter = setInterval(() => {
         time--;
-        console.log(
-          this.state.currentTime +
-            " " +
-            this.state.mainTime +
-            " " +
-            this.state.sessionLength
-        );
-        minutes = this.formater(Math.floor(time / 60));
-        seconds = this.formater(time % 60);
-
-        if (time < 0) {
-          clearInterval(this.state.counter);
-          return;
+        this.setState({ remainingTime: time });
+        this.displayUpdater(time);
+        // chunk to be fixed
+        if (time === 0) {
+          if (this.state.break) {
+            console.log({
+              mt: this.state.mainTime,
+              bt: this.state.breakLength,
+            });
+            this.setState({
+              break: false,
+              runningType: "Session",
+            });
+            time = this.state.sessionLength * 60;
+          } else if (!this.state.break) {
+            this.setState({
+              break: true,
+              runningType: "Break",
+            });
+            console.log({
+              mt: this.state.mainTime,
+              st: this.state.sessionLength,
+            });
+            time = this.state.breakLength * 60;
+          }
+          // this.displayUpdater(time);
         }
-
-        this.setState({
-          mainTime: `${minutes}:${seconds}`,
-          currentTime: time,
-        });
       }, 1000);
       return;
     }
@@ -78,17 +95,27 @@ class App extends React.Component {
     clearInterval(this.state.counter);
     this.setState({
       running: false,
+      runningType: "Session",
       mainTime: "25:00",
-      currentTime: 0,
+      remainingTime: 25,
       sessionLength: 25,
       breakLength: 5,
       counter: null,
       paused: null,
+      break: false,
+      sessionCounter: 0,
     });
   };
 
-  formater(tm) {
-    return tm < 10 ? "0" + tm : tm;
+  displayUpdater(tm) {
+    let fmin = Math.floor(tm / 60);
+    let fsec = Math.floor(tm % 60);
+
+    this.setState({
+      mainTime: `${fmin < 10 ? "0" + fmin : fmin}:${
+        fsec < 10 ? "0" + fsec : fsec
+      }`,
+    });
   }
 
   CBbuttonFunctions(action) {
@@ -98,7 +125,7 @@ class App extends React.Component {
           return;
         } else {
           this.setState({ sessionLength: this.state.sessionLength + 1 });
-          console.log("in-ses");
+          this.displayUpdater((this.state.sessionLength + 1) * 60);
         }
         break;
       case "decreaseSession":
@@ -106,6 +133,7 @@ class App extends React.Component {
           return;
         } else {
           this.setState({ sessionLength: this.state.sessionLength - 1 });
+          this.displayUpdater((this.state.sessionLength - 1) * 60);
         }
         break;
       case "increaseBreak":
@@ -113,7 +141,6 @@ class App extends React.Component {
           return;
         } else {
           this.setState({ breakLength: this.state.breakLength + 1 });
-          console.log("in-brk");
         }
         break;
       case "decreaseBreak":
@@ -121,7 +148,6 @@ class App extends React.Component {
           return;
         } else {
           this.setState({ breakLength: this.state.breakLength - 1 });
-          console.log("de-bre");
         }
         break;
       default:
@@ -141,7 +167,7 @@ class App extends React.Component {
       <div class="App">
         {/* fcc test CDN */}
         <ReactFCCtest />
-        <div class="Session">
+        <div className="Session">
           <div className="timer-label">
             <span id="timer-label" className="box-lable">
               {this.state.runningType}
