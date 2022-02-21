@@ -13,6 +13,7 @@ class SessionLength extends React.Component {
           </div>
         </div>
         <div id="session-length">
+
           <span className="levelOne time-display">{this.props.sesLength}</span>
         </div>
         <div className="btnContainer">
