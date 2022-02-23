@@ -36,7 +36,7 @@ class App extends React.Component {
 
     this.displayUpdater(time, this.state.runningType);
     time--;
-    this.state.counter = setInterval(() => {
+    this.setState({ counter: setInterval(() => {
       date = new Date().getTime();
       console.log("startTimer", time);
       if (date > nextDate) {
@@ -49,7 +49,8 @@ class App extends React.Component {
       time--;
         nextDate += second;
       }
-    }, 1);
+    }, 1)
+    })
   };
 
   timerControl = () => {
