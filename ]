@@ -3,7 +3,6 @@ import React from "react";
 import SessionLength from "./Components/SessionLength";
 import Break from "./Components/Break";
 import ReactFCCtest from "react-fcctest";
-const audio = document.getElementById("beep")
 
 class App extends React.Component {
   constructor(props) {
@@ -33,27 +32,23 @@ class App extends React.Component {
     let second = 1000;
     let date = new Date().getTime();
     let nextDate = new Date().getTime() + second;
-
-    this.displayUpdater(time, this.state.runningType);
-    time--;
     this.state.counter = setInterval(() => {
       date = new Date().getTime();
       console.log("startTimer", time);
       if (date > nextDate) {
+        time--;
         this.displayUpdater(time, this.state.runningType);
-        if (time === 0) audio.play();
         this.setState({ remainingTime: time });
-        if (time < 0) {
+        if (time === 0) {
           this.switchSession();
         }
-      time--;
+
         nextDate += second;
       }
     }, 1);
   };
 
   timerControl = () => {
-    console.log("test")
     if (this.state.paused === true) {
       this.setState({ paused: false });
       this.startTimer(this.state.remainingTime);
@@ -72,11 +67,11 @@ class App extends React.Component {
     if (this.state.runningType === "Break") {
       this.setState({ runningType: "Session", break: false });
       clearInterval(this.state.counter);
-      this.startTimer(this.state.sessionLength * 60);
+      this.startTimer(this.state.sessionLength);
     } else if (this.state.runningType === "Session") {
       this.setState({ runningType: "Break", break: true });
       clearInterval(this.state.counter);
-      this.startTimer(this.state.breakLength * 60);
+      this.startTimer(this.state.breakLength);
     }
   };
 
@@ -85,18 +80,16 @@ class App extends React.Component {
     this.setState({
       running: false,
       runningType: "Session",
-      mainTime: "25:00",
-      remainingTime: 0,
+      mainTime: "",
+      remainingTime: null,
       sessionLength: 25,
       breakLength: 5,
       counter: null,
-      paused: null,
+      paused: false,
       break: false,
       sessionCounter: 0,
     });
-    audio.pause();
-    audio.currentTime=0;
-    // this.displayUpdater(1500, this.state.runningType);
+    this.displayUpdater(1500, this.state.runningType);
   };
 
   displayUpdater = (tm, sessionType) => {
@@ -163,6 +156,13 @@ class App extends React.Component {
     }
   }
 
+  // pression the session increment/decrement buttons should update
+  // the time remaining display immediately if both these conditions
+  // are true: the clock is not currently running AND the timer is
+  // currently in ‘break’ mode/state. What all this means is that when
+  // you first load your app, if you press +/- on your session buttons,
+  // it will reflect in the display time right away, but when you hit play,
+  // you then cannot change length using same buttons
   render() {
     return (
       <div class="App">

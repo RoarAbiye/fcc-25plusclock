@@ -14,8 +14,7 @@ I can see an element with a corresponding id="session-length", which by default 
 - [✓] `User Story #7:`
 I can see an element with a corresponding id="timer-label", that contains a string indicating a session is initialized (e.g. "Session").
 
-:todo:
-- [✗] `User Story #8:`
+- [✓] `User Story #8:`
 _I can see an element with corresponding id="time-left". NOTE: Paused or running, the value in this field should always be displayed in mm:ss format (i.e. 25:00)._
 
 - [✓] `User Story #9:`
@@ -24,9 +23,9 @@ I can see a clickable element with a corresponding id="start_stop".
 I can see a clickable element with a corresponding id="reset".
 
 # Timer
-- [✗] `User Story #11:`
-:error: `25 + 5 clock has paused but time continued elapsing: expected '00' to equal '59'`
-~~When I click the element with the id of reset, any running timer should be stopped, the value within id="break-length" should return to 5, the value within id="session-length" should return to 25, and the element with id="time-left" should reset to its default state.~~
+- [✓] `User Story #11:`
+%% :error: `25 + 5 clock has paused but time continued elapsing: expected '00' to equal '59'`
+When I click the element with the id of reset, any running timer should be stopped, the value within id="break-length" should return to 5, the value within id="session-length" should return to 25, and the element with id="time-left" should reset to its default state.
 
 - [✓] `User Story #12:`
 When I click the element with the id of break-decrement, the value within id="break-length" decrements by a value of 1, and I can see the updated value.
@@ -58,16 +57,16 @@ If the timer is paused and I click the element with id="start_stop", the countdo
 - [✓] `User Story #22:`
 When a session countdown reaches zero (NOTE: timer MUST reach 00:00), and a new countdown begins, the element with the id of timer-label should display a string indicating a break has begun.
 
-- [✗] `User Story #23:`
-~~When a session countdown reaches zero (NOTE: timer MUST reach 00:00), a new break countdown should begin, counting down from the value currently displayed in the id="break-length" element~~
-:error: `Timer has switched to Break time, but it didn't start with the correct value.: expected 4 to equal 5`
+- [✓] `User Story #23:`
+When a session countdown reaches zero (NOTE: timer MUST reach 00:00), a new break countdown should begin, counting down from the value currently displayed in the id="break-length" element
+%% :error: `Timer has switched to Break time, but it didn't start with the correct value.: expected 4 to equal 5`
 
 - [✓] `User Story #24:`
 When a break countdown reaches zero (NOTE: timer MUST reach 00:00), and a new countdown begins, the element with the id of timer-label should display a string indicating a session has begun.
 
-- [✗] `User Story #25:`
-~~When a break countdown reaches zero (NOTE: timer MUST reach 00:00), a new session countdown should begin, counting down from the value currently displayed in the id="session-length" element.~~
-:error: `Timer has switched back to Session time, but it didn't start with the correct value.: expected 0 to equal 1`
+- [✓] `User Story #25:`
+When a break countdown reaches zero (NOTE: timer MUST reach 00:00), a new session countdown should begin, counting down from the value currently displayed in the id="session-length" element.
+%% :error: `Timer has switched back to Session time, but it didn't start with the correct value.: expected 0 to equal 1`
 
 # Audio
 - [✗] `User Story #26:`
